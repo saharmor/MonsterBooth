@@ -9,51 +9,6 @@ const PrintPage = ({ capturedImg }) => {
 
   const hasSentApiCall = useRef(false);
 
-  useEffect(() => {
-    const sendImages = async () => {
-      if (capturedImg && !hasSentApiCall.current) {
-        hasSentApiCall.current = true;
-        try {
-          const scaryImageUrl = await sendImageToAPI(capturedImg);
-          if (scaryImageUrl) {
-            emailImage(scaryImageUrl);
-          }
-          sendImageToLlava(capturedImg);
-        } catch (error) {
-          console.error('Error processing images:', error);
-        }
-      }
-    };
-  
-    sendImages();
-  }, [capturedImg]);
-
-  const speakText = (text) => {
-    const utterance = new SpeechSynthesisUtterance(text);
-    speechSynthesis.speak(utterance);
-  };
-
-  const emailImage = async (imageUrl) => {
-    const data = {
-      imgUrl: imageUrl,
-    };
-
-    try {
-      const response = await fetch('http://127.0.0.1:5000/email-img', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-      console.log(result);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
 
   const sendImageToAPI = async (image) => {
     try {
@@ -141,6 +96,51 @@ const PrintPage = ({ capturedImg }) => {
     }
   };
 
+
+  useEffect(() => {
+    const sendImages = async () => {
+      if (capturedImg && !hasSentApiCall.current) {
+        hasSentApiCall.current = true;
+        try {
+          const scaryImageUrl = await sendImageToAPI(capturedImg);
+          if (scaryImageUrl) {
+            emailImage(scaryImageUrl);
+          }
+          await sendImageToLlava(capturedImg);
+        } catch (error) {
+          console.error('Error processing images:', error);
+        }
+      }
+    };
+  
+    sendImages();
+  }, [capturedImg]);
+
+  const speakText = (text) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    speechSynthesis.speak(utterance);
+  };
+
+  const emailImage = async (imageUrl) => {
+    const data = {
+      imgUrl: imageUrl,
+    };
+
+    try {
+      const response = await fetch('http://127.0.0.1:5000/email-img', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
     <div className='print-container'>
