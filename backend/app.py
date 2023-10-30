@@ -10,6 +10,11 @@ app = Flask(__name__)
 CORS(app, origins="http://localhost:3000")
 
 DEST_EMAIL = 'test@gmail.com'
+SENDER_EMAIL = 'test@gmail.com'
+GMAIL_APP_TOKEN = 'YOUR_GMAIL_APP_TOKEN'
+
+os.environ['SENDER_EMAIL'] = SENDER_EMAIL
+os.environ['GMAIL_APP_TOKEN'] = GMAIL_APP_TOKEN
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -71,9 +76,6 @@ def send_email(image_path: str, dest_email: str):
     server.sendmail(from_address, dest_email, text)
     server.quit()
 
-os.environ['SENDER_EMAIL'] = ''
-os.environ['GMAIL_APP_TOKEN'] = 'bemoklxcgvvfbdej'
-
 @app.route('/email-img', methods=['POST'])
 def email_new_pic():
     data = request.get_json()
@@ -85,7 +87,7 @@ def email_new_pic():
             with open(img_path, 'wb') as file:
                 for chunk in response.iter_content(chunk_size=8192):
                     file.write(chunk)
-            send_email(img_path, 'saharmorm@gmail.com')
+            send_email(img_path, DEST_EMAIL)
             return {'message': 'Image saved successfully'}, 200
         except Exception as e:
             return {'error': str(e)}, 500
@@ -93,7 +95,7 @@ def email_new_pic():
 
 
 import os
-os.environ['REPLICATE_API_TOKEN'] = 'YOUR_API_KEY'
+os.environ['REPLICATE_API_TOKEN'] = 'r8_8whGoMoFSgXO1LzOUNzUUXjm9fflXFt3KyEDw'
 
 @app.route('/roasting', methods=['POST'])
 def roast():
