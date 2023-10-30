@@ -93,7 +93,7 @@ def email_new_pic():
 
 
 import os
-os.environ['REPLICATE_API_TOKEN'] = 'r8_8whGoMoFSgXO1LzOUNzUUXjm9fflXFt3KyEDw'
+os.environ['REPLICATE_API_TOKEN'] = 'YOUR_API_KEY'
 
 @app.route('/roasting', methods=['POST'])
 def roast():
