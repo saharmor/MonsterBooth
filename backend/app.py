@@ -5,6 +5,7 @@ from io import BytesIO
 from PIL import Image
 from flask_cors import CORS
 import os
+import replicate
 
 app = Flask(__name__)
 CORS(app, origins="http://localhost:3000")
@@ -12,24 +13,12 @@ CORS(app, origins="http://localhost:3000")
 DEST_EMAIL = 'test@gmail.com'
 SENDER_EMAIL = 'test@gmail.com'
 GMAIL_APP_TOKEN = 'YOUR_GMAIL_APP_TOKEN'
+REPLICATE_API_TOKEN = 'YOUR_REPLCIATE_API_TOKEN'
 
 os.environ['SENDER_EMAIL'] = SENDER_EMAIL
-os.environ['GMAIL_APP_TOKEN'] = GMAIL_APP_TOKEN
+os.environ['GMAIL_APP_TOKEN'] = GMAIL_APP_TOKEN # https://www.getmailbird.com/gmail-app-password/
+os.environ['REPLICATE_API_TOKEN'] = REPLICATE_API_TOKEN
 
-@app.route('/upload', methods=['POST'])
-def upload():
-    data = request.json
-    image_data = data['image'].split(',')[1]
-    image = Image.open(BytesIO(base64.b64decode(image_data)))
-    image.save('uploaded_image_control.jpg')
-
-    filename = 'uploaded_image.jpg'
-    image_url = f'https://cdn.theatlantic.com/thumbor/YIc364JrPdiVwbeU5aE5KL5Pb1U=/900x600/media/img/photo/2022/10/photos-spirit-halloween-2022/a01_1437915545/original.jpg'
-
-
-    text = "MUHAHAHAHA!!!"
-    # generated_audio = generate_audio(text)
-    return jsonify({'image_url': image_url})
 
 def send_email(image_path: str, dest_email: str):
     import smtplib
@@ -83,7 +72,7 @@ def email_new_pic():
     if imgUrl:
         try:
             response = requests.get(imgUrl, stream=True)
-            img_path = '/Users/saharmor/Documents/codebase/scary-cam/backend/uploaded_image.jpg'
+            img_path = 'uploaded_image.jpg'
             with open(img_path, 'wb') as file:
                 for chunk in response.iter_content(chunk_size=8192):
                     file.write(chunk)
@@ -91,23 +80,18 @@ def email_new_pic():
             return {'message': 'Image saved successfully'}, 200
         except Exception as e:
             return {'error': str(e)}, 500
+    
     return {'error': 'No URL provided'}, 400    
 
 
-import os
-os.environ['REPLICATE_API_TOKEN'] = 'r8_8whGoMoFSgXO1LzOUNzUUXjm9fflXFt3KyEDw'
-
 @app.route('/roasting', methods=['POST'])
 def roast():
-    import replicate
-
-    # Parse JSON data from request
     data = request.json
     image_data = data['image'].split(',')[1]
     image = Image.open(BytesIO(base64.b64decode(image_data)))
 
     # Save the image to a file
-    image_path = '/Users/saharmor/Documents/codebase/scary-cam/backend/uploaded_image_llava.jpg'
+    image_path = 'uploaded_image_roast.jpg'
     image.save(image_path)
 
     # Call the replicate API
@@ -115,11 +99,9 @@ def roast():
         "yorickvp/llava-13b:2facb4a474a0462c15041b78b1ad70952ea46b5ec6ad29583c0b29dbd4249591",
         input={
             "image": open(image_path, "rb"),
-            # "prompt": "Roast this folks. Be mean and funny, you should make your readers laugh and cry."
             "prompt": "Roast the people in this picture. Roasts should be short, 10 words maximum. Roasts should be smart, creative, and extremely funny.\nOnly keep the roast part, no need to describe the scene.\n WE COUNT ON YOU! "
         }
     )
-
 
     # Concatenate the output to get the roast text
     roast_text = ""
