@@ -9,4 +9,4 @@ Capture image via web interface --> Get a Halloween-like image and a roast --> P
 4. In the same terminal from Step #3, run the backend Flask server `python3 app.py`
 
 # Todo
-[ ] Integrate with an Instax camera using [InstaxBLE](https://github.com/javl/InstaxBLE) or [instax_api](https://github.com/jpwsutton/instax_api), so when a user clicks _Print!_, an image is getting printed via the connected Instax printer
+- [ ] Integrate with an Instax camera using [InstaxBLE](https://github.com/javl/InstaxBLE) or [instax_api](https://github.com/jpwsutton/instax_api), so when a user clicks _Print!_, an image is getting printed via the connected Instax printer
