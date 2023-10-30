@@ -16,11 +16,13 @@
 
 .capture-button,
 .print-button {
+  font-size: 40px;
   padding: 10px;
   border: none;
   border-radius: 5px;
   color: #fff;
   cursor: pointer;
+  margin-top: 20px;
 }
 
 .capture-button {
@@ -65,4 +67,33 @@
 
 .retake-btn {
   background-color: #d99a1d;
+  font-size: 40px;
+  margin-top: 20px;
+}
+
+.countdown {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  color: red;
+  font-size: 200px;
+  z-index: 999;
+}
+
+
+.loading-text{
+  color: white;
+}
+
+video {
+  transform: scaleX(-1); /* This will mirror the video stream */
+}
+
+
+.captured-image {
+  width: 800px;
+  padding: 20px;
+  border-radius: 10%;
 }

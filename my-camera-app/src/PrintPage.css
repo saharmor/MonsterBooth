@@ -1,0 +1,54 @@
+.print-container {
+    text-align: center;
+    min-width: 1000px;
+}
+
+.image-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.uploaded-image {
+    width: 500px;
+    height: auto;
+}
+
+.scary-image {
+    width: 500px;
+    height: auto;
+}
+
+.image-arrow {
+    font-size: 2em;
+    margin: 0 20px;
+    color: white;
+}
+
+.roast-container {
+    margin-top: 20px;
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.roast-text {
+    font-size: 3em;
+    line-height: 1.5;
+    text-align: left;
+    text-align: center;
+    color: white
+}
+
+.roast-title {
+    color: orange;
+}
+
+.images-loading {
+    color:white
+}
+
+.roast-text-loading {
+    color: white;
+}
