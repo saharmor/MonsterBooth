@@ -1,0 +1,4 @@
+flask
+Pillow
+flask_cors
+replicate
