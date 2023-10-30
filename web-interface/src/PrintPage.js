@@ -3,6 +3,8 @@ import axios from 'axios';
 
 import './PrintPage.css';
 
+const SERVER_URL = 'http://127.0.0.1:5000';
+
 const PrintPage = ({ capturedImg }) => {
   const [scaryImageUrl, setScaryImageUrl] = useState(null);
   const [roastText, setRoastText] = useState(null);
@@ -48,7 +50,7 @@ const PrintPage = ({ capturedImg }) => {
       const formData = new FormData();
       formData.append('file', compressedBlob, `image.${fileType}`);
   
-      const apiResponse = await axios.post('https://polaroid-hack-fast-server.vercel.app/scarify_image/', formData, {
+      const apiResponse = await axios.post(SERVER_URL + '/scarify_image', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -75,7 +77,7 @@ const PrintPage = ({ capturedImg }) => {
         const base64data = reader.result;
 
         // Make the API call
-        const apiResponseLlava = await fetch('http://127.0.0.1:5000/roasting', {
+        const apiResponseLlava = await fetch(SERVER_URL + '/roasting', {
           method: 'POST',
           body: JSON.stringify({ image: base64data }),
           headers: {
@@ -127,7 +129,7 @@ const PrintPage = ({ capturedImg }) => {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/email-img', {
+      const response = await fetch(SERVER_URL + '/email-img', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

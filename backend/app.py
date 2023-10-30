@@ -4,7 +4,7 @@ import base64
 from io import BytesIO
 from PIL import Image
 from flask_cors import CORS
-import os
+import os, random
 import replicate
 
 app = Flask(__name__)
@@ -13,7 +13,7 @@ CORS(app, origins="http://localhost:3000")
 DEST_EMAIL = 'test@gmail.com'
 SENDER_EMAIL = 'test@gmail.com'
 GMAIL_APP_TOKEN = 'YOUR_GMAIL_APP_TOKEN'
-REPLICATE_API_TOKEN = 'YOUR_REPLCIATE_API_TOKEN'
+REPLICATE_API_TOKEN = 'YOUR_REPLICATE_API_TOKEN'
 
 os.environ['SENDER_EMAIL'] = SENDER_EMAIL
 os.environ['GMAIL_APP_TOKEN'] = GMAIL_APP_TOKEN # https://www.getmailbird.com/gmail-app-password/
@@ -83,6 +83,34 @@ def email_new_pic():
     
     return {'error': 'No URL provided'}, 400    
 
+prompts = [
+    'attractive dracula with fangs, fireball eyes, sexy, spooky, model',
+    'spider crypt, dimly lit, scary',
+    'gory scene undead, blood, gore, scary',
+    'zombie, undead, scary, green light',
+    'Ghostly apparition, ancient mansion, eerie mist, moonlit night',
+    'Creepy scarecrow, deserted field, crows, full moon',
+    'Creepy doll, cracked porcelain, one missing eye, old attic',
+]
+
+@app.route('/scarify_image', methods=['POST'])
+def scarify():
+    file = request.files.get('file')
+    buffered_reader = BytesIO(file.read())
+
+    # choose random prompts
+    prompt = prompts[random.randint(0, len(prompts)-1)]
+    try:
+        #public_url = await upload_file(file)
+        output = replicate.run(
+                "usamaehsan/controlnet-1.1-x-realistic-vision-v2.0:51778c7522eb99added82c0c52873d7a391eecf5fcc3ac7856613b7e6443f2f7",
+                input={"image": buffered_reader, 'prompt':prompt, 'structure':'lineart'},
+                #'negative_prompt':'(deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime:1.4), text, close up, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck'
+        )
+    except Exception as e:
+        print(e)
+        return jsonify({"error": str(e)})
+    return jsonify({"scary_image_url": output})
 
 @app.route('/roasting', methods=['POST'])
 def roast():
