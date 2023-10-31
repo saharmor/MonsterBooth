@@ -1,6 +1,6 @@
 # MoonsterBooth 🧌
 Turn yourself into a Halloween-styled character and get an original roast with the power of AI.</br>
-Capture image via web interface --> Get a Halloween-like image and a roast --> Print via an Instax Polaroid printer.
+Capture image via web interface --> Get a Halloween-like image and a roast --> Print via an Instax Polaroid printer OR send via email.
 
 https://github.com/saharmor/MonsterBooth/assets/6180201/82e0b66e-4267-4e0e-a289-0cb2c94d846a
 
