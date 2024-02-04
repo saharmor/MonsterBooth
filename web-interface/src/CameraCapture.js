@@ -2,18 +2,24 @@ import React, { useRef, useState } from 'react';
 import Webcam from 'react-webcam';
 import './CameraCapture.css';
 
+// This list should match the key names from the backend list in backend/app.py
+const styleOptions = ['marvel comics', 'pixar', 'dracula', 'scary', 'zombie', 'creepy doll', 'ghostly', 'vibrant']
 
-const CameraCapture = ({capturedImage, setCapturedImage, setIsPrintScreen}) => {
-    const coundownTime = 3;
+
+const CameraCapture = ({ capturedImage, setCapturedImage, setIsPrintScreen, imgStyle, setImgStyle }) => {
+    const coundownTime = 1;
 
     const webcamRef = useRef(null);
     const [isCaptured, setIsCaptured] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [capturedImageUrl, setCapturedImageUrl] = useState(null);
 
-
     const [showCountdown, setShowCountdown] = useState(false);
     const [countdown, setCountdown] = useState(null);
+
+    const handleStyleChange = (event) => {
+        setImgStyle(event.target.value);
+    };
 
     const capture = async () => {
         setShowCountdown(true);
@@ -74,19 +80,29 @@ const CameraCapture = ({capturedImage, setCapturedImage, setIsPrintScreen}) => {
             }
 
             {getLoadingComponent()}
-            {!isCaptured && <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" width={800} videoConstraints={{
+            {!isCaptured && <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" width={600} videoConstraints={{
                 facingMode: 'user',
             }} autoPlay className="webcam" onUserMedia={handleLoad} />
             }
 
-            {isCaptured && <img src={capturedImage} alt="captured" className="captured-image"/>}
+            {isCaptured && <img src={capturedImage} alt="captured" className="captured-image" />}
 
             <div className="button-group">
                 {getButton()}
                 {isCaptured && (
-                    <button onClick={handlePrint} className="print-button">
-                        Print!
-                    </button>
+                    <>
+                        <select value={imgStyle} onChange={handleStyleChange} className="style-select">
+                            <option value="surprise me">Surprise Me</option>
+                            {styleOptions.map((style, index) => (
+                                <option key={index} value={style}>{style}</option>
+                            ))
+                            }
+                        </select>
+
+                        <button onClick={handlePrint} className="print-button">
+                            Print!
+                        </button>
+                    </>
                 )}
             </div>
 

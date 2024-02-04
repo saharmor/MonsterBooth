@@ -5,7 +5,7 @@ import './PrintPage.css';
 
 const SERVER_URL = 'http://127.0.0.1:5000';
 
-const PrintPage = ({ capturedImg }) => {
+const PrintPage = ({ capturedImg, imgStyle }) => {
   const [scaryImageUrl, setScaryImageUrl] = useState(null);
   const [roastText, setRoastText] = useState(null);
 
@@ -49,7 +49,8 @@ const PrintPage = ({ capturedImg }) => {
       // Create a FormData object and append the compressed Blob with a filename
       const formData = new FormData();
       formData.append('file', compressedBlob, `image.${fileType}`);
-  
+      formData.append('prompt_style', imgStyle);
+
       const apiResponse = await axios.post(SERVER_URL + '/scarify_image', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',

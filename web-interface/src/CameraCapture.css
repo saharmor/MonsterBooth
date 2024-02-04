@@ -67,7 +67,7 @@
 
 .retake-btn {
   background-color: #d99a1d;
-  font-size: 40px;
+  font-size: 30px;
   margin-top: 20px;
 }
 
@@ -93,7 +93,18 @@ video {
 
 
 .captured-image {
-  width: 800px;
+  width: 600px;
   padding: 20px;
   border-radius: 10%;
+}
+
+.style-select {
+  background-color: #ffffff; /* Background color */
+  border: 1px solid #cccccc; /* Border color */
+  padding: 10px; /* Padding for text and custom arrow */
+  border-radius: 20px; /* Rounded corners */
+  font-size: 16px; /* Text size */
+  color: #333333; /* Text color */
+  outline: none; /* Remove the outline */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow for depth */
 }
